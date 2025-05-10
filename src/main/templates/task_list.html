@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="{% static 'style/style.css' %}">
+        <title>Taches</title>
+    </head>
+    <body>
+        <h1>
+            Liste des taches
+        </h1>
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for task in tasks %}
+            <tr>
+              <td>{{ task.title }}</td>
+              <td>{{ task.description }}</td>
+              <td>
+                {% if task.completed %}
+                <span class="text-success">Completed</span>
+                {% else %}
+                <span class="text-danger">Incomplete</span>
+                {% endif %}
+              </td>
+              <td>
+                <a href="#" hx-get="{% url 'toggle_task' task.id %}" hx-target="closest tr" hx-swap="outerHTML" class="btn-action">
+                  {% if task.completed %}
+                  Complete
+                  {% else %}
+                  Incomplete
+                  {% endif %}
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <a href="{% url 'create_task' %}" class="btn-primary">Add Task</a>
+
+     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    </body>
+</html>
